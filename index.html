@@ -396,8 +396,8 @@
                     <input type="number" id="sPrice" step="0.1">
                 </div>
                 <div class="form-group">
-                    <label>圖片檔名/網址 (選填，管理員可後補)</label>
-                    <input type="text" id="sImg" placeholder="例如: img1.jpg">
+                    <label>圖片網址 (選填，可直接貼上圖片連結)</label>
+                    <input type="url" id="sImg" placeholder="https://...">
                 </div>
                 <button type="submit" class="btn-primary submit-btn">提交審核</button>
             </form>
@@ -427,88 +427,89 @@
     </div>
 
     <script>
-        // 替換為你的 Google Apps Script Web App URL
+        // 你的最新 Google Apps Script Web App URL
         const scriptURL = "https://script.google.com/macros/s/AKfycbyNm5pyXU5G7mrJwv3Kmt3YRqZsgqN-Ep9ueFDzOF3QJGNGaB5J1jtlLWJfjAVAMsno/exec";
         
         let isAdmin = false;
         
-        // 預設資料 (移除本地圖片，保留空白以顯示管理員補圖佔位符)
+        // 預設資料對齊你的 Excel 截圖
         let products = [
             {
                 id: 1,
-                name: "Neco Puree 無添加雞肉海鮮肉泥",
+                name: "Neco Puree 天然...",
                 brand: "Riverd Republic",
                 category: "健康肉泥",
                 origin: "日本",
-                ingredients: "[雞肉] 雞柳、米粉 [海鮮] 海鮮（金槍魚、鰹魚、鮭魚、銀魚）、米粉",
-                img: "",
+                ingredients: "雞柳、米粉、天...",
+                img: "請在此貼上圖片網址", 
                 status: "published",
-                prices: []
+                prices: [{ shop: "Petkoikoi", price: 0 }]
             },
             {
                 id: 2,
-                name: "TOPVALU 鰹魚無添加貓泥",
-                brand: "TOPVALU",
-                category: "健康肉泥",
-                origin: "泰國",
-                ingredients: "鰹魚、米粉、鮪魚油、維他命E",
-                img: "",
+                name: "但馬高原凍乾雞...",
+                brand: "Mamacook",
+                category: "凍乾",
+                origin: "日本",
+                ingredients: "100% 日本兵庫縣...",
+                img: "請在此貼上圖片網址",
                 status: "published",
-                prices: [
-                    { shop: "最平", price: 15.9 }
-                ]
+                prices: [{ shop: "HKTVmall", price: 0 }]
             },
             {
                 id: 3,
-                name: "Muji 無添加雞胸肉肉泥 (含乳酸菌)",
-                brand: "Muji",
-                category: "健康肉泥",
+                name: "但馬高原凍乾雞...",
+                brand: "Mamacook",
+                category: "凍乾",
                 origin: "日本",
-                ingredients: "雞胸肉、米粉、乳酸菌",
-                img: "",
+                ingredients: "100% 日本兵庫縣...",
+                img: "請在此貼上圖片網址",
                 status: "published",
-                prices: [
-                    { shop: "無印良品", price: 22.0 }
-                ]
+                prices: [{ shop: "Whiskers N Paw", price: 0 }]
             },
             {
                 id: 4,
-                name: "但馬高原凍乾雞柳",
-                brand: "MAMACOOK",
+                name: "貓貓凍乾雞胸+雞...",
+                brand: "Mamacook",
                 category: "凍乾",
                 origin: "日本",
-                ingredients: "100% 日本雞胸肉",
-                img: "",
+                ingredients: "雞胸肉、雞肝",
+                img: "請在此貼上圖片網址",
                 status: "published",
-                prices: [
-                    { shop: "最平", price: 58.0 }
-                ]
+                prices: [{ shop: "Whiskers N Paw", price: 0 }]
             },
             {
                 id: 5,
-                name: "Hagoromo無一物鰹魚湯包",
+                name: "無添加雞胸肉肉...",
+                brand: "Muji",
+                category: "健康肉泥",
+                origin: "日本",
+                ingredients: "雞胸肉、米粉、...",
+                img: "請在此貼上圖片網址",
+                status: "published",
+                prices: [{ shop: "Muji", price: 0 }]
+            },
+            {
+                id: 6,
+                name: "鰹魚無添加貓泥",
+                brand: "TOPVALU",
+                category: "健康肉泥",
+                origin: "泰國",
+                ingredients: "鰹魚、米粉、鮪...",
+                img: "請在此貼上圖片網址",
+                status: "published",
+                prices: [{ shop: "AEON", price: 0 }]
+            },
+            {
+                id: 7,
+                name: "無一物鰹魚湯包",
                 brand: "Hagoromo",
                 category: "健康湯包",
                 origin: "日本",
                 ingredients: "鰹魚、水",
-                img: "",
+                img: "請在此貼上圖片網址",
                 status: "published",
-                prices: [
-                    { shop: "最平", price: 11.0 }
-                ]
-            },
-            {
-                id: 6,
-                name: "Neco Puree 頂級無添加天然雞肉肉泥",
-                brand: "Riverd Republic",
-                category: "健康肉泥",
-                origin: "日本",
-                ingredients: "雞柳、米粉、天然水 (使用鳥取縣奧大泉水)、扇貝提取物調味料、麥芽低聚醣、鰹魚湯、海帶湯、寒天、維生素E",
-                img: "",
-                status: "published",
-                prices: [
-                    { shop: "Petkoi", price: 25.0 }
-                ]
+                prices: [{ shop: "Don Don Donki", price: 0 }]
             }
         ];
 
@@ -524,17 +525,18 @@
                 // 類別過濾
                 if (filter !== 'all' && product.category !== filter) return;
 
-                // 處理圖片佔位符
-                let imgHtml = product.img 
-                    ? `<img src="${product.img}" alt="${product.name}" onerror="this.outerHTML='<div class=\\'img-container\\'>🐾 等待管理員補圖</div>'">` 
-                    : `🐾 等待管理員補圖`;
+                // 處理圖片佔位符與直接顯示圖片網址
+                let imgHtml = (product.img && product.img !== "請在此貼上圖片網址")
+                    ? `<img src="${product.img}" alt="${product.name}" onerror="this.outerHTML='<div class=\\'img-container\\'>🐾 圖片載入失敗</div>'">` 
+                    : `🐾 等待補圖`;
 
                 // 處理價格清單
                 let priceHtml = '';
                 if (product.prices && product.prices.length > 0) {
-                    priceHtml = product.prices.map(p => 
-                        `<div class="price-item"><span>📍 ${p.shop}</span><strong>HK$${p.price}</strong></div>`
-                    ).join('');
+                    priceHtml = product.prices.map(p => {
+                        let displayPrice = p.price > 0 ? `HK$${p.price}` : `價格待定`;
+                        return `<div class="price-item"><span>📍 ${p.shop}</span><strong>${displayPrice}</strong></div>`;
+                    }).join('');
                 } else {
                     priceHtml = `<div class="info">暫無報價</div>`;
                 }
