@@ -27,6 +27,7 @@
             line-height: 1.6;
         }
 
+        /* Header & Nav */
         header {
             background-color: var(--white);
             padding: 1rem 5%;
@@ -39,6 +40,12 @@
             z-index: 100;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .logo {
             font-size: 1.2rem;
             font-weight: bold;
@@ -46,6 +53,32 @@
             cursor: pointer;
         }
 
+        .nav-menu {
+            display: flex;
+            background: #f5f5f5;
+            border-radius: 25px;
+            padding: 4px;
+        }
+
+        .nav-btn {
+            border: none;
+            background: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn.active {
+            background: var(--white);
+            color: var(--accent);
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        /* Hero Section */
         .hero {
             background-color: var(--light-peach);
             padding: 4rem 5%;
@@ -69,6 +102,7 @@
             margin: 0 auto;
         }
 
+        /* Controls */
         .controls {
             display: flex;
             justify-content: space-between;
@@ -101,6 +135,7 @@
             transition: opacity 0.3s;
         }
 
+        /* Grid */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -206,6 +241,80 @@
             margin-bottom: 4px;
         }
 
+        /* Principles Section */
+        .principles-container {
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 0 5%;
+        }
+
+        .principles-intro {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 4rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            margin-bottom: 3rem;
+        }
+
+        .principles-intro h3 {
+            color: var(--accent);
+            font-size: 1rem;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .principles-intro h2 {
+            font-size: 2.2rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .principles-intro p {
+            color: var(--text-light);
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .principle-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            position: relative;
+            border-left: 5px solid;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+        }
+
+        .p-card-1 { border-color: #FFB094; background: #FFF9F7; }
+        .p-card-2 { border-color: #F48FB1; background: #FFF6F9; }
+        .p-card-3 { border-color: #81C784; background: #F6FFF7; }
+        .p-card-4 { border-color: #64B5F6; background: #F6FAFF; }
+
+        .p-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .p-number {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: rgba(0,0,0,0.05);
+        }
+
+        .principle-card h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: #333;
+        }
+
+        /* Modals */
         .modal {
             display: none;
             position: fixed;
@@ -274,222 +383,89 @@
             color: var(--text-light);
             font-size: 1.1rem;
         }
+        
+        .error-box {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border: 1px solid #ef9a9a;
+            margin: 0 auto;
+            max-width: 800px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        /* Hide elements dynamically */
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .principles-grid { grid-template-columns: 1fr; }
+            header { flex-direction: column; gap: 15px; }
+        }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo">Eat with Meow 🐾</div>
-        <div style="font-size: 0.85rem; color: #ccc; cursor:pointer;" onclick="adminLogin()">Admin</div>
+        <div class="header-left">
+            <div class="nav-menu">
+                <button class="nav-btn active" onclick="switchTab('wall')">首頁牆</button>
+                <button class="nav-btn" onclick="switchTab('principles')">健康原則</button>
+            </div>
+            <div style="font-size: 0.85rem; color: #ccc; cursor:pointer;" onclick="adminLogin()">Admin</div>
+        </div>
     </header>
 
-    <div class="hero">
-        <h1>HAPPY SHARING!</h1>
-        <p>匯集貓友們的真實評價，為毛孩挑選兼顧美味與健康的無負擔點心。</p>
-    </div>
+    <!-- 區塊 1: 首頁牆 (預設顯示) -->
+    <div id="section-wall">
+        <div class="hero">
+            <h1>HAPPY SHARING!</h1>
+            <p>匯集貓友們的真實評價，為毛孩挑選兼顧美味與健康的無負擔點心。</p>
+        </div>
 
-    <div class="controls">
-        <select id="categoryFilter" onchange="renderGrid()">
-            <option value="all">所有類別</option>
-            <option value="健康肉泥">健康肉泥</option>
-            <option value="凍乾">凍乾</option>
-            <option value="健康湯包">健康湯包</option>
-        </select>
-        <button class="btn-primary" onclick="openModal('addSnackModal')">+ 分享主子的最愛</button>
-    </div>
+        <div class="controls">
+            <select id="categoryFilter" onchange="renderGrid()">
+                <option value="all">所有類別</option>
+                <option value="健康肉泥">健康肉泥</option>
+                <option value="凍乾">凍乾</option>
+                <option value="健康湯包">健康湯包</option>
+            </select>
+            <button class="btn-primary" onclick="openModal('addSnackModal')">+ 分享主子的最愛</button>
+        </div>
 
-    <div class="grid" id="productGrid">
-        <div class="loading-text">🐾 正在從資料庫載入零食清單...</div>
-    </div>
-
-    <!-- Add Snack Modal -->
-    <div class="modal" id="addSnackModal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>🐾 新增健康零食</h2>
-                <button class="close-btn" onclick="closeModal('addSnackModal')">&times;</button>
-            </div>
-            <form id="snackForm" onsubmit="submitSnack(event)">
-                <div class="form-group">
-                    <label>產品名稱</label>
-                    <input type="text" id="sName" required>
-                </div>
-                <div class="form-group">
-                    <label>品牌</label>
-                    <input type="text" id="sBrand" required>
-                </div>
-                <div class="form-group">
-                    <label>類別</label>
-                    <select id="sCategory">
-                        <option value="健康肉泥">健康肉泥</option>
-                        <option value="凍乾">凍乾</option>
-                        <option value="健康湯包">健康湯包</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>產地</label>
-                    <input type="text" id="sOrigin" required>
-                </div>
-                <div class="form-group">
-                    <label>主要成分</label>
-                    <textarea id="sIngredients" rows="2" required></textarea>
-                </div>
-                <div class="form-group">
-                    <label>圖片網址 (選填)</label>
-                    <input type="url" id="sImg" placeholder="https://...">
-                </div>
-                <button type="submit" class="btn-primary submit-btn">提交審核</button>
-            </form>
+        <div class="grid" id="productGrid">
+            <div class="loading-text">🐾 正在從資料庫載入零食清單...</div>
         </div>
     </div>
 
-    <script>
-        const scriptURL = "https://script.google.com/macros/s/AKfycbyJhnzbvZq1uUTxO0PGD3vim3Dm2CwcwpjRrsd0apxiBVj3Ck1DH6wWDVQgCyXGKpuy/exec";
-        let isAdmin = false;
-        let products = [];
+    <!-- 區塊 2: 健康原則 (預設隱藏) -->
+    <div id="section-principles" class="hidden">
+        <div class="principles-container">
+            <div class="principles-intro">
+                <h3>給毛孩家長的小筆記</h3>
+                <h2>選擇貓咪健康零食原則</h2>
+                <p>看懂成分與份量，從這幾個小原則開始，替每一口點心多一點安心。</p>
+            </div>
 
-        async function fetchProducts() {
-            try {
-                const response = await fetch(scriptURL);
-                const data = await response.json();
-                
-                products = data.map(item => {
-                    let prices = [];
-                    if (item.shop1Name && item.shop1Price) prices.push({ shop: item.shop1Name, price: parseFloat(item.shop1Price) });
-                    if (item.shop2Name && item.shop2Price) prices.push({ shop: item.shop2Name, price: parseFloat(item.shop2Price) });
-                    prices.sort((a, b) => a.price - b.price);
-                    
-                    return {
-                        id: item.id,
-                        name: item.name,
-                        brand: item.brand,
-                        category: item.category,
-                        origin: item.origin,
-                        ingredients: item.ingredients,
-                        img: item.img,
-                        status: item.status === "Pending" ? "pending" : "published",
-                        prices: prices
-                    };
-                });
-                
-                products = products.filter(p => p.name && p.name !== "");
-                renderGrid();
-                
-            } catch (error) {
-                document.getElementById('productGrid').innerHTML = '<div class="loading-text">載入失敗，請確認 Google Sheet 權限設定。</div>';
-            }
-        }
-
-        function renderGrid() {
-            const grid = document.getElementById('productGrid');
-            const filter = document.getElementById('categoryFilter').value;
-            grid.innerHTML = '';
-
-            if (products.length === 0) {
-                grid.innerHTML = '<div class="loading-text">目前還沒有零食紀錄喔！</div>';
-                return;
-            }
-
-            products.forEach(product => {
-                if (!isAdmin && product.status === "pending") return;
-                if (filter !== 'all' && product.category !== filter) return;
-
-                let imgHtml = (product.img && product.img.startsWith("http"))
-                    ? `<img src="${product.img}" alt="${product.name}" onerror="this.outerHTML='<div class=\\'img-container\\'>🐾 圖片載入失敗</div>'">` 
-                    : `🐾 等待補圖`;
-
-                let priceHtml = '';
-                if (product.prices && product.prices.length > 0) {
-                    priceHtml = product.prices.map(p => {
-                        let displayPrice = p.price > 0 ? `HK$${p.price}` : `價格待定`;
-                        return `<div class="price-item"><span>📍 ${p.shop}</span><strong>${displayPrice}</strong></div>`;
-                    }).join('');
-                } else {
-                    priceHtml = `<div class="info">暫無報價</div>`;
-                }
-
-                let statusBadge = (isAdmin && product.status === "pending") ? `<div class="status-badge">待審核</div>` : '';
-
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.innerHTML = `
-                    ${statusBadge}
-                    <div class="img-container">
-                        ${imgHtml}
-                    </div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <span class="brand">${product.brand}</span>
-                            <span class="origin">${product.origin}</span>
-                        </div>
-                        <div class="title">${product.name}</div>
-                        <span class="category-tag">${product.category}</span>
-                        <div class="info"><strong>主要成分：</strong>${product.ingredients}</div>
-                        
-                        <div class="price-section">
-                            <div style="font-size:0.8rem; color:var(--text-light); margin-bottom:5px;">參考售價：</div>
-                            <div class="price-list">${priceHtml}</div>
-                        </div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        function adminLogin() {
-            const pwd = prompt("請輸入管理員密碼：");
-            if (pwd === "MaruCheung529") {
-                isAdmin = true;
-                alert("管理員登入成功！");
-                renderGrid();
-            }
-        }
-
-        function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-
-        function submitSnack(e) {
-            e.preventDefault();
-            const btn = e.target.querySelector('button[type="submit"]');
-            btn.innerText = "提交中...";
-            btn.disabled = true;
-
-            const newSnack = {
-                name: document.getElementById('sName').value,
-                brand: document.getElementById('sBrand').value,
-                category: document.getElementById('sCategory').value,
-                origin: document.getElementById('sOrigin').value,
-                ingredients: document.getElementById('sIngredients').value,
-                img: document.getElementById('sImg').value,
-                shop1Name: "",
-                shop1Price: ""
-            };
-
-            fetch(scriptURL, {
-                method: 'POST',
-                body: JSON.stringify(newSnack),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-            })
-            .then(response => response.json())
-            .then(data => {
-                alert("感謝分享！已進入審核階段。");
-                closeModal('addSnackModal');
-                document.getElementById('snackForm').reset();
-                fetchProducts();
-            })
-            .finally(() => {
-                btn.innerText = "提交審核";
-                btn.disabled = false;
-            });
-        }
-
-        fetchProducts();
-
-        window.onclick = function(event) {
-            if (event.target.className === 'modal') {
-                event.target.style.display = 'none';
-            }
-        }
-    </script>
-</body>
-</html>
+            <div class="principles-grid">
+                <div class="principle-card p-card-1">
+                    <div class="p-number">01</div>
+                    <div class="p-icon">🥩</div>
+                    <h4 style="color:#D84315;">單一成分優先</h4>
+                    <p style="color:var(--text-light); font-size:0.9rem;">成分表越短越好，能清楚知道毛孩吃進了什麼。天然無添加的肉塊或凍乾是首選。</p>
+                </div>
+                <div class="principle-card p-card-2">
+                    <div class="p-number">02</div>
+                    <div class="p-icon">🍖</div>
+                    <h4 style="color:#C2185B;">拒絕不明肉類與副產品</h4>
+                    <p style="color:var(--text-light); font-size:0.9rem;">避開標示含糊的「禽肉粉」、「肉類副產品」，應選擇明確標示肉類來源（如：雞胸肉、鮭魚）的零食。</p>
+                </div>
+                <div class="principle-card p-card-3">
+                    <div class="p-number">03</div>
+                    <div class="p-icon">💧</div>
+                    <h4 style="color:#2E7D32;">注意鈉含量與人工添加</h4>
+                    <p style="color:var(--text-light); font-
