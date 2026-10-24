@@ -69,12 +69,6 @@
             margin: 0 auto;
         }
 
-        .doodle-banner {
-            max-width: 250px;
-            margin: 0 auto 1.5rem auto;
-            display: block;
-        }
-
         .controls {
             display: flex;
             justify-content: space-between;
@@ -107,21 +101,6 @@
             transition: opacity 0.3s;
         }
 
-        .btn-primary:hover { opacity: 0.9; }
-
-        .btn-secondary {
-            background-color: var(--white);
-            color: var(--text-dark);
-            border: 1px solid var(--border-color);
-            padding: 0.5rem 1rem;
-            border-radius: 15px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .btn-secondary:hover { background-color: var(--light-peach); }
-
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -139,8 +118,6 @@
             transition: transform 0.3s;
             position: relative;
         }
-
-        .card:hover { transform: translateY(-5px); }
 
         .status-badge {
             position: absolute;
@@ -212,4 +189,307 @@
         .info {
             font-size: 0.9rem;
             color: var(--text-light);
-            margin-bottom:
+            margin-bottom: 1rem;
+        }
+
+        .price-section {
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        .price-list { margin-top: 0.5rem; font-size: 0.9rem; }
+
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 2rem;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+
+        .form-group { margin-bottom: 1rem; }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            margin-top: 1rem;
+        }
+        
+        .loading-text {
+            text-align: center;
+            width: 100%;
+            padding: 2rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Eat with Meow 🐾</div>
+        <div style="font-size: 0.85rem; color: #ccc; cursor:pointer;" onclick="adminLogin()">Admin</div>
+    </header>
+
+    <div class="hero">
+        <h1>HAPPY SHARING!</h1>
+        <p>匯集貓友們的真實評價，為毛孩挑選兼顧美味與健康的無負擔點心。</p>
+    </div>
+
+    <div class="controls">
+        <select id="categoryFilter" onchange="renderGrid()">
+            <option value="all">所有類別</option>
+            <option value="健康肉泥">健康肉泥</option>
+            <option value="凍乾">凍乾</option>
+            <option value="健康湯包">健康湯包</option>
+        </select>
+        <button class="btn-primary" onclick="openModal('addSnackModal')">+ 分享主子的最愛</button>
+    </div>
+
+    <div class="grid" id="productGrid">
+        <div class="loading-text">🐾 正在從資料庫載入零食清單...</div>
+    </div>
+
+    <!-- Add Snack Modal -->
+    <div class="modal" id="addSnackModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🐾 新增健康零食</h2>
+                <button class="close-btn" onclick="closeModal('addSnackModal')">&times;</button>
+            </div>
+            <form id="snackForm" onsubmit="submitSnack(event)">
+                <div class="form-group">
+                    <label>產品名稱</label>
+                    <input type="text" id="sName" required>
+                </div>
+                <div class="form-group">
+                    <label>品牌</label>
+                    <input type="text" id="sBrand" required>
+                </div>
+                <div class="form-group">
+                    <label>類別</label>
+                    <select id="sCategory">
+                        <option value="健康肉泥">健康肉泥</option>
+                        <option value="凍乾">凍乾</option>
+                        <option value="健康湯包">健康湯包</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>產地</label>
+                    <input type="text" id="sOrigin" required>
+                </div>
+                <div class="form-group">
+                    <label>主要成分</label>
+                    <textarea id="sIngredients" rows="2" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>圖片網址 (選填)</label>
+                    <input type="url" id="sImg" placeholder="https://...">
+                </div>
+                <button type="submit" class="btn-primary submit-btn">提交審核</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = "https://script.google.com/macros/s/AKfycbyJhnzbvZq1uUTxO0PGD3vim3Dm2CwcwpjRrsd0apxiBVj3Ck1DH6wWDVQgCyXGKpuy/exec";
+        let isAdmin = false;
+        let products = [];
+
+        async function fetchProducts() {
+            try {
+                const response = await fetch(scriptURL);
+                const data = await response.json();
+                
+                products = data.map(item => {
+                    let prices = [];
+                    if (item.shop1Name && item.shop1Price) prices.push({ shop: item.shop1Name, price: parseFloat(item.shop1Price) });
+                    if (item.shop2Name && item.shop2Price) prices.push({ shop: item.shop2Name, price: parseFloat(item.shop2Price) });
+                    prices.sort((a, b) => a.price - b.price);
+                    
+                    return {
+                        id: item.id,
+                        name: item.name,
+                        brand: item.brand,
+                        category: item.category,
+                        origin: item.origin,
+                        ingredients: item.ingredients,
+                        img: item.img,
+                        status: item.status === "Pending" ? "pending" : "published",
+                        prices: prices
+                    };
+                });
+                
+                products = products.filter(p => p.name && p.name !== "");
+                renderGrid();
+                
+            } catch (error) {
+                document.getElementById('productGrid').innerHTML = '<div class="loading-text">載入失敗，請確認 Google Sheet 權限設定。</div>';
+            }
+        }
+
+        function renderGrid() {
+            const grid = document.getElementById('productGrid');
+            const filter = document.getElementById('categoryFilter').value;
+            grid.innerHTML = '';
+
+            if (products.length === 0) {
+                grid.innerHTML = '<div class="loading-text">目前還沒有零食紀錄喔！</div>';
+                return;
+            }
+
+            products.forEach(product => {
+                if (!isAdmin && product.status === "pending") return;
+                if (filter !== 'all' && product.category !== filter) return;
+
+                let imgHtml = (product.img && product.img.startsWith("http"))
+                    ? `<img src="${product.img}" alt="${product.name}" onerror="this.outerHTML='<div class=\\'img-container\\'>🐾 圖片載入失敗</div>'">` 
+                    : `🐾 等待補圖`;
+
+                let priceHtml = '';
+                if (product.prices && product.prices.length > 0) {
+                    priceHtml = product.prices.map(p => {
+                        let displayPrice = p.price > 0 ? `HK$${p.price}` : `價格待定`;
+                        return `<div class="price-item"><span>📍 ${p.shop}</span><strong>${displayPrice}</strong></div>`;
+                    }).join('');
+                } else {
+                    priceHtml = `<div class="info">暫無報價</div>`;
+                }
+
+                let statusBadge = (isAdmin && product.status === "pending") ? `<div class="status-badge">待審核</div>` : '';
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    ${statusBadge}
+                    <div class="img-container">
+                        ${imgHtml}
+                    </div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="brand">${product.brand}</span>
+                            <span class="origin">${product.origin}</span>
+                        </div>
+                        <div class="title">${product.name}</div>
+                        <span class="category-tag">${product.category}</span>
+                        <div class="info"><strong>主要成分：</strong>${product.ingredients}</div>
+                        
+                        <div class="price-section">
+                            <div style="font-size:0.8rem; color:var(--text-light); margin-bottom:5px;">參考售價：</div>
+                            <div class="price-list">${priceHtml}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function adminLogin() {
+            const pwd = prompt("請輸入管理員密碼：");
+            if (pwd === "MaruCheung529") {
+                isAdmin = true;
+                alert("管理員登入成功！");
+                renderGrid();
+            }
+        }
+
+        function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
+        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
+
+        function submitSnack(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.innerText = "提交中...";
+            btn.disabled = true;
+
+            const newSnack = {
+                name: document.getElementById('sName').value,
+                brand: document.getElementById('sBrand').value,
+                category: document.getElementById('sCategory').value,
+                origin: document.getElementById('sOrigin').value,
+                ingredients: document.getElementById('sIngredients').value,
+                img: document.getElementById('sImg').value,
+                shop1Name: "",
+                shop1Price: ""
+            };
+
+            fetch(scriptURL, {
+                method: 'POST',
+                body: JSON.stringify(newSnack),
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("感謝分享！已進入審核階段。");
+                closeModal('addSnackModal');
+                document.getElementById('snackForm').reset();
+                fetchProducts();
+            })
+            .finally(() => {
+                btn.innerText = "提交審核";
+                btn.disabled = false;
+            });
+        }
+
+        fetchProducts();
+
+        window.onclick = function(event) {
+            if (event.target.className === 'modal') {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
