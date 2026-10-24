@@ -1,0 +1,1494 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eat with Meow | 毛孩健康零食分享平台</title>
+    <!-- Google Fonts for Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e77b65; /* Peach */
+            --primary-light: #fdf0e6;
+            --primary-glow: rgba(231, 123, 101, 0.2);
+            --bg-color: #faf9f6; /* Cream */
+            --card-bg: #ffffff;
+            --text-main: #2d2d2d;
+            --text-light: #737373;
+            --border-radius: 20px;
+            --border-color: #eae5e3;
+            --transition-bounce: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --transition-smooth: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Inter', 'Helvetica Neue', 'Proxima Nova', 'PingFang HK', 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header & Nav */
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        nav {
+            background: #f4f0ec;
+            padding: 4px;
+            border-radius: 30px;
+            display: flex;
+            gap: 4px;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #8c8582;
+            cursor: pointer;
+            padding: 8px 18px;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+            font-family: inherit;
+        }
+
+        nav button:hover {
+            color: var(--primary-color);
+        }
+
+        nav button.active {
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        /* Container & Tabs */
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .tab-content {
+            display: none;
+            animation: slideUp 0.5s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Interactive Doodles & Hero */
+        .hero {
+            position: relative;
+            text-align: center;
+            padding: 80px 20px 70px;
+            background: #fce7e3;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            color: #c95d46;
+            margin-bottom: 18px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: #8c5a4f;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: #ffffff;
+            color: #e77b65;
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 10px rgba(231,123,101,0.1);
+        }
+
+        /* Decorative Cats in Banner */
+        .hero-cat {
+            position: absolute;
+            background-image: url('IMG_2369_2.jpg');
+            background-repeat: no-repeat;
+            mix-blend-mode: multiply;
+            z-index: 1;
+            opacity: 0.95; 
+            pointer-events: none;
+        }
+
+        .cat-left {
+            width: 150px;
+            height: 150px;
+            background-size: 360%;
+            background-position: 2% 52%; /* Targets the box cat */
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%) rotate(-5deg);
+        }
+
+        .cat-right {
+            width: 160px;
+            height: 180px;
+            background-size: 330%;
+            background-position: 98% 46%; /* Targets sitting cat looking up */
+            top: 50%;
+            right: 5%;
+            transform: translateY(-50%);
+        }
+
+        .cat-top {
+            width: 120px;
+            height: 120px;
+            background-size: 400%;
+            background-position: 45% 4%; /* Targets the crown head */
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%) rotate(10deg);
+            margin-left: -220px;
+        }
+
+        .tips-cat-art {
+            width: 180px;
+            height: 160px;
+            margin: 0 auto 10px auto;
+            background-image: url('IMG_2369_2.jpg');
+            background-size: 320%;
+            background-position: 0% 50%;
+            mix-blend-mode: multiply;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: var(--transition-bounce);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+
+        .btn:hover { 
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(231,123,101,0.3);
+            background-color: #df6f58;
+        }
+        
+        .btn:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-danger { background-color: #e63946; box-shadow: 0 4px 15px rgba(230,57,70,0.2); }
+        .btn-danger:hover { background-color: #d62835; box-shadow: 0 8px 25px rgba(230,57,70,0.3); }
+        
+        select.filter-select {
+            padding: 12px 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--card-bg);
+            color: var(--text-main);
+            outline: none;
+            transition: var(--transition-smooth);
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        select.filter-select:hover, select.filter-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        /* Snack Cards Grid */
+        .snack-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .snack-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            transition: var(--transition-bounce);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        .snack-card:hover { 
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(231,123,101,0.12);
+        }
+
+        .snack-img-wrapper {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background-color: #ffffff;
+        }
+
+        .snack-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #ffffff;
+            padding: 20px;
+            box-sizing: border-box;
+            transition: transform 0.6s ease;
+        }
+
+        .snack-card:hover .snack-img {
+            transform: scale(1.05);
+        }
+
+        .snack-info {
+            padding: 24px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            align-self: flex-start;
+            letter-spacing: 0.5px;
+        }
+
+        .snack-title {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin: 0 0 8px 0;
+            color: #1a1a1a;
+            line-height: 1.3;
+        }
+
+        .snack-details {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+        
+        .snack-details strong { color: #555; }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .star-icon { width: 16px; height: 16px; fill: var(--primary-color); }
+        .star-icon.empty { fill: #e5e5e5; }
+
+        .snack-review {
+            font-size: 0.95rem;
+            background: #fbf9f8;
+            padding: 16px;
+            border-radius: 16px;
+            border-left: 4px solid var(--primary-color);
+            margin-top: auto;
+            color: #4a4a4a;
+            font-style: italic;
+        }
+
+        /* Form Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26, 26, 26, 0.4);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            animation: fadeInModal 0.3s forwards;
+        }
+
+        @keyframes fadeInModal {
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 580px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            transform: scale(0.95);
+            animation: scaleIn 0.3s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            to { transform: scale(1); }
+        }
+
+        /* Custom Scrollbar */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-thumb { background-color: #dcdcdc; border-radius: 10px; }
+
+        .modal-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            background: #f0f0f0;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            transition: var(--transition-smooth);
+        }
+
+        .modal-close:hover { background: #e0e0e0; transform: rotate(90deg); }
+
+        .modal-header-icon {
+            width: 54px;
+            height: 54px;
+            background: var(--primary-light);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transform: rotate(-10deg);
+        }
+        .modal-header-icon svg { width: 28px; height: 28px; fill: var(--primary-color); }
+
+        .modal-subtitle {
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .modal-content h2 {
+            margin: 0 0 10px 0;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #1a1a1a;
+            letter-spacing: -0.5px;
+        }
+
+        .modal-desc {
+            color: var(--text-light);
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .form-group { margin-bottom: 24px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: #333;
+            font-size: 0.95rem;
+        }
+        .req-star { color: var(--primary-color); margin-left: 4px; }
+
+        .form-control {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 14px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 14px;
+            font-size: 1rem;
+            font-family: inherit;
+            background: #fdfdfd;
+            transition: var(--transition-smooth);
+            color: var(--text-main);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px var(--primary-glow);
+        }
+
+        .form-control::placeholder { color: #b3b3b3; font-weight: 400; }
+
+        .price-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .price-prefix {
+            position: absolute;
+            left: 18px;
+            color: #666;
+            font-weight: 700;
+        }
+        .price-input-group input { padding-left: 60px; }
+
+        /* Price Comparison Dropdown & Badges */
+        .price-section { margin-top: 16px; border-top: 1px dashed var(--border-color); padding-top: 16px; }
+        .lowest-price { font-size: 0.95rem; color: #666; margin-bottom: 12px; }
+        .lowest-price strong { color: #a0522d; font-size: 1.15rem; font-weight: 800; }
+        .toggle-prices-btn {
+            width: 100%;
+            background: var(--primary-light);
+            color: #a0522d;
+            border: 1px solid #fce7e3;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .toggle-prices-btn:hover { background: #fce7e3; }
+        .price-list-dropdown {
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            overflow: hidden;
+            animation: fadeInModal 0.3s forwards;
+        }
+        .price-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #faf9f6;
+            padding: 12px 16px;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            color: #555;
+            border: 1px solid #f0f0f0;
+        }
+        .cheapest-badge {
+            background: #fef08a;
+            color: #854d0e;
+            padding: 4px 8px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-left: 8px;
+            font-weight: 800;
+            display: inline-block;
+        }
+        .shop-unit { font-size: 0.85rem; color: #999; }
+        .shop-name-wrapper { display: flex; align-items: center; color: #444; font-weight: 500;}
+        .shop-price-wrapper { font-weight: 700; color: #a0522d; }
+
+        /* Dynamic Price Input Rows */
+        .price-input-row { display: flex; gap: 8px; margin-bottom: 12px; align-items: center; }
+        .price-input-row .form-control { padding: 12px 14px; }
+        .del-price-btn { 
+            background: #fee2e2; color: #ef4444; border: none; 
+            width: 44px; height: 44px; border-radius: 12px; 
+            cursor: pointer; font-weight: bold; flex-shrink: 0;
+            transition: var(--transition-smooth);
+        }
+        .del-price-btn:hover { background: #fca5a5; }
+        .add-price-btn {
+            background: none; border: 2px dashed var(--border-color);
+            color: var(--text-light); width: 100%; padding: 12px;
+            border-radius: 12px; cursor: pointer; font-weight: 600;
+            transition: var(--transition-smooth);
+        }
+        .add-price-btn:hover { border-color: var(--primary-color); color: var(--primary-color); background: var(--primary-light); }
+
+        /* File Upload */
+        .file-upload-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            border: 2px dashed var(--border-color);
+            border-radius: 14px;
+            background: #fafafa;
+            padding: 10px;
+            transition: var(--transition-smooth);
+        }
+        .file-upload-wrapper:hover { border-color: var(--primary-color); background: var(--primary-light); }
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0; top: 0; width: 100%; height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .file-btn {
+            background: var(--card-bg);
+            color: var(--text-main);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-right: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            pointer-events: none;
+        }
+        .file-text { color: #888; font-size: 0.95rem; pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;}
+        .file-hint { font-size: 0.85rem; color: #999; margin-top: 8px; }
+
+        /* Star Rating */
+        .rating-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+            background: #fafafa;
+            padding: 15px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border-color);
+        }
+        .rating-label { font-weight: 700; color: #333; width: 100px; }
+        .stars-container { display: flex; gap: 8px; cursor: pointer; }
+        .stars-container svg {
+            width: 32px; height: 32px;
+            fill: #e0e0e0;
+            transition: var(--transition-bounce);
+        }
+        .stars-container svg:hover { transform: scale(1.1); }
+        .stars-container svg.active { fill: var(--primary-color); }
+
+        .submit-btn {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 18px;
+            border-radius: 16px;
+            font-size: 1.15rem;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: var(--transition-bounce);
+            box-shadow: 0 4px 15px var(--primary-glow);
+        }
+        .submit-btn:hover { 
+            background-color: #df6f58; 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231,123,101,0.3);
+        }
+        .submit-footer { text-align: center; font-size: 0.85rem; color: #999; margin-top: 15px; }
+
+        /* Tips Masonry-style Grid Layout */
+        .tips-header {
+            background: #fff;
+            border-radius: var(--border-radius);
+            padding: 50px 20px;
+            text-align: center;
+            margin: 0 auto 30px auto;
+            max-width: 650px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+            border: 1px solid #f9ebe6;
+        }
+        .tips-subtitle {
+            color: var(--primary-color);
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tips-header h1 {
+            color: #1a1a1a;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            letter-spacing: -0.5px;
+        }
+        .tips-header p { color: #666; margin: 0; font-size: 1.05rem; }
+        
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            align-items: start; /* crucial for masonry feel */
+        }
+        
+        .tip-card {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            border: 1px solid #f5f5f5;
+            transition: var(--transition-bounce);
+        }
+        .tip-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.06);
+        }
+        .tip-card.full-width {
+            grid-column: 1 / -1;
+            background: linear-gradient(to right, #ffffff, #fdfaf9);
+        }
+        .tip-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .tip-icon {
+            width: 48px; height: 48px;
+            border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+        }
+        .tip-num {
+            color: #e0e0e0;
+            font-family: 'Inter', monospace;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+        .tip-card h3 {
+            margin: 0 0 15px 0;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #2d2d2d;
+        }
+        .tip-card ul {
+            padding-left: 20px;
+            margin: 0;
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+        .tip-card li { margin-bottom: 12px; }
+        .tip-card li::marker { color: var(--primary-color); font-size: 1.2em; }
+
+        /* Colorful Tip Cards (nth-child styling) */
+        .tips-grid .tip-card:nth-child(1) { background-color: #fffaf5; border-left: 6px solid #fca5a5; }
+        .tips-grid .tip-card:nth-child(1) h3 { color: #d97706; }
+        .tips-grid .tip-card:nth-child(1) .tip-icon { background-color: #fee2e2; }
+
+        .tips-grid .tip-card:nth-child(2) { background-color: #fff5f7; border-left: 6px solid #f9a8d4; }
+        .tips-grid .tip-card:nth-child(2) h3 { color: #db2777; }
+        .tips-grid .tip-card:nth-child(2) .tip-icon { background-color: #fce7f3; }
+
+        .tips-grid .tip-card:nth-child(3) { background-color: #fffbf0; border-left: 6px solid #fcd34d; }
+        .tips-grid .tip-card:nth-child(3) h3 { color: #b45309; }
+        .tips-grid .tip-card:nth-child(3) .tip-icon { background-color: #fef3c7; }
+
+        .tips-grid .tip-card:nth-child(4) { background-color: #f0f9ff; border-left: 6px solid #7dd3fc; }
+        .tips-grid .tip-card:nth-child(4) h3 { color: #0284c7; }
+        .tips-grid .tip-card:nth-child(4) .tip-icon { background-color: #e0f2fe; }
+
+        .tips-grid .tip-card:nth-child(5) { background-color: #f5f3ff; border-left: 6px solid #c4b5fd; background-image: none !important; }
+        .tips-grid .tip-card:nth-child(5) h3 { color: #7c3aed; }
+        .tips-grid .tip-card:nth-child(5) .tip-icon { background-color: #ede9fe; }
+
+        /* Admin Table */
+        .admin-wrapper {
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th, td { padding: 16px; border-bottom: 1px solid var(--border-color); }
+        th { background-color: #fafafa; font-weight: 700; color: #444; border-bottom: 2px solid #eaeaea;}
+        tr:last-child td { border-bottom: none; }
+        
+        .action-btn {
+            background: #f0f0f0; color: #333; border: none; padding: 8px 12px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .action-btn:hover { background: #e0e0e0; }
+        .action-btn.del { background: #ffebeb; color: #e63946; }
+        .action-btn.del:hover { background: #fcd5d5; }
+
+        /* Footer */
+        .site-footer {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a39e9d;
+            font-size: 0.9rem;
+            line-height: 1.8;
+            margin-top: 40px;
+            font-weight: 500;
+        }
+        .admin-link {
+            color: #dcd7d5;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+            font-size: 0.8rem;
+            transition: color 0.2s;
+        }
+        .admin-link:hover { color: #b3aba8; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo" onclick="switchTab('home'); return false;">
+            <svg width="24" height="24" viewBox="0 0 256 256" fill="currentColor"><path d="M228,88a12,12,0,0,1-12,12H40a12,12,0,0,1,0-24H216A12,12,0,0,1,228,88ZM216,140H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24Zm0,64H40a12,12,0,0,0,0,24H216a12,12,0,0,0,0-24Z"></path></svg>
+            Eat with Meow
+        </a>
+        <nav>
+            <button class="active" onclick="switchTab('home')">首頁牆</button>
+            <button onclick="switchTab('tips')">健康原則</button>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Tab 1: Home -->
+        <div id="home" class="tab-content active">
+            <div class="hero">
+                <!-- Decorative Cats cut from IMG_2369_2.jpg -->
+                <div class="hero-cat cat-left"></div>
+                <div class="hero-cat cat-right"></div>
+                <div class="hero-cat cat-top"></div>
+                
+                <div class="hero-content">
+                    <div class="hero-badge">✦ 為貓咪挑選健康零食</div>
+                    <h1>HAPPY SHARING!</h1>
+                    <p>匯集貓友們的真實評價，為毛孩挑選兼顧美味與健康的無負擔點心。</p>
+                </div>
+            </div>
+
+            <div class="controls">
+                <select id="filter-category" class="filter-select" onchange="renderSnacks()">
+                    <option value="all">所有類別</option>
+                    <option value="凍乾">凍乾肉肉</option>
+                    <option value="健康肉泥">健康肉泥</option>
+                    <option value="健康湯包">健康湯包</option>
+                </select>
+                <button class="btn" onclick="openModal()">+ 分享主子的最愛</button>
+            </div>
+
+            <div class="snack-grid" id="snack-wall">
+                <!-- Snacks injected here -->
+            </div>
+        </div>
+
+        <!-- Tab 2: Tips -->
+        <div id="tips" class="tab-content">
+            <div class="tips-header">
+                <div class="tips-cat-art"></div>
+                <div class="tips-subtitle">給毛孩家長的小筆記</div>
+                <h1>選擇貓咪健康零食原則</h1>
+                <p>看懂成分與份量，從這五個小原則開始，替每一口點心多一點安心。</p>
+            </div>
+
+            <div class="tips-grid">
+                <!-- Card 1 -->
+                <div class="tip-card">
+                    <div class="tip-card-header">
+                        <div class="tip-icon">🥩</div>
+                        <div class="tip-num">01</div>
+                    </div>
+                    <h3>單一成分優先</h3>
+                    <ul>
+                        <li>優先選擇成分純粹的零食，例如 100% 純凍乾雞肉、牛肉或三文魚。</li>
+                        <li>成分表越短，對主子的身體負擔越少。</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="tip-card">
+                    <div class="tip-card-header">
+                        <div class="tip-icon">🍖</div>
+                        <div class="tip-num">02</div>
+                    </div>
+                    <h3>拒絕不明肉類與副產品</h3>
+                    <ul>
+                        <li>認清標籤，選擇標明具體肉類來源的產品，例如「火雞肉」。</li>
+                        <li>避免標示模糊的「禽肉粉」或「動物副產品」。</li>
+                    </ul>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="tip-card">
+                    <div class="tip-card-header">
+                        <div class="tip-icon">🚫</div>
+                        <div class="tip-num">03</div>
+                    </div>
+                    <h3>拒絕人工添加物</h3>
+                    <ul>
+                        <li>嚴格避免含有化學防腐劑（BHA/BHT）、人工色素、高鹽分及高糖分的零食。</li>
+                        <li>留意容易引致腸胃敏感的增稠劑，例如角叉菜膠 / 膠凍。</li>
+                    </ul>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="tip-card">
+                    <div class="tip-card-header">
+                        <div class="tip-icon">💧</div>
+                        <div class="tip-num">04</div>
+                    </div>
+                    <h3>補水機能性</h3>
+                    <ul>
+                        <li>對於不愛喝水的貓咪，可適量挑選低鈉、無膠、高水分的健康肉泥或貓湯。</li>
+                        <li>讓主子享用零食時，也補充一些水分。</li>
+                    </ul>
+                </div>
+
+                <!-- Card 5 (Full width) -->
+                <div class="tip-card full-width">
+                    <div class="tip-card-header">
+                        <div class="tip-icon">⚖️</div>
+                        <div class="tip-num">05</div>
+                    </div>
+                    <h3>10% 卡路里黃金法則</h3>
+                    <ul>
+                        <li>零食的每日熱量不可超過貓咪一日所需總熱量的 10%。</li>
+                        <li>過量餵食容易導致主子肥胖及挑食問題。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Admin -->
+        <div id="admin" class="tab-content">
+            <div id="admin-login" class="admin-wrapper" style="text-align: center; max-width: 400px; margin: 0 auto;">
+                <h2 style="margin-top:0;">系統管理</h2>
+                <div class="form-group" style="margin: 25px 0;">
+                    <input type="password" id="admin-pwd" class="form-control" placeholder="請輸入管理員密碼">
+                </div>
+                <button class="btn" style="width:100%;" onclick="checkAdmin()">登入</button>
+            </div>
+
+            <div id="admin-dashboard" class="admin-wrapper" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2 style="margin:0;">後台管理系統</h2>
+                    <button class="action-btn" onclick="logoutAdmin()">登出</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>圖片</th>
+                                <th>名稱</th>
+                                <th>品牌</th>
+                                <th>類別</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-table-body">
+                            <!-- Admin rows -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        ⓘ 提示：給毛孩餵食新零食前，建議先諮詢獸醫意見。<br>
+        為毛孩挑零食，也給彼此一點安心。 ♡<br>
+        <a href="#" onclick="switchTab('admin'); return false;" class="admin-link">Staff Login</a>
+    </footer>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="upload-modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            
+            <div class="modal-header-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            </div>
+            <div class="modal-subtitle">把好味道分享出去</div>
+            <h2>分享主子的最愛</h2>
+            <div class="modal-desc">記下主子的零食心得，給其他貓友一點靈感。</div>
+
+            <form id="snack-form" onsubmit="submitSnack(event)">
+                <input type="hidden" id="edit-id">
+                
+                <div class="form-group">
+                    <label>零食名稱 <span class="req-star">*</span></label>
+                    <input type="text" id="snack-name" class="form-control" required placeholder="例如：雞胸肉凍乾小方塊">
+                </div>
+
+                <div class="form-group">
+                    <label>選擇類別 <span class="req-star">*</span></label>
+                    <select id="snack-cat" class="form-control" required>
+                        <option value="凍乾">凍乾肉肉</option>
+                        <option value="健康肉泥">健康肉泥</option>
+                        <option value="健康湯包">健康湯包</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>品牌名稱（選填）</label>
+                    <input type="text" id="snack-brand" class="form-control" placeholder="例如：MAMACOOK">
+                </div>
+
+                <div class="form-group">
+                    <label>製造產地 (Country of Origin) <span class="req-star">*</span></label>
+                    <input type="text" id="snack-origin" class="form-control" required placeholder="例如：日本、紐西蘭、台灣">
+                </div>
+
+                <div class="form-group">
+                    <label>主要成分 <span class="req-star">*</span></label>
+                    <input type="text" id="snack-ingredients" class="form-control" required placeholder="例如：雞胸肉、少量水">
+                </div>
+
+                <div class="form-group">
+                    <label>包裝規格 / 份量備註（選填）</label>
+                    <input type="text" id="snack-specs" class="form-control" placeholder="例如：50g、100g">
+                </div>
+
+                <div class="form-group">
+                    <label>產品圖片（選填）</label>
+                    <div class="file-upload-wrapper">
+                        <div class="file-btn">Choose file</div>
+                        <div class="file-text" id="file-name-display">No file chosen</div>
+                        <input type="file" id="snack-img-file" accept="image/jpeg, image/png, image/webp" onchange="handleFileSelect(event)">
+                    </div>
+                    <div class="file-hint">JPEG、PNG 或 WebP，原始檔上限 5MB；上傳後會自動壓縮。</div>
+                </div>
+
+                <div class="form-group">
+                    <label>價格與銷售點 (Prices & Shops)</label>
+                    <div id="price-list-container">
+                        <!-- Dynamic price rows injected here -->
+                    </div>
+                    <button type="button" class="add-price-btn" onclick="addPriceRow()">+ 新增售價資訊</button>
+                </div>
+
+                <!-- Star Ratings -->
+                <div class="rating-group">
+                    <div class="rating-label">貓咪喜愛度</div>
+                    <div class="stars-container" id="pref-stars" data-value="0">
+                        <svg class="star" data-val="1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="2" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="3" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="4" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="5" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </div>
+                </div>
+
+                <div class="rating-group">
+                    <div class="rating-label">回購意願</div>
+                    <div class="stars-container" id="repurchase-stars" data-value="0">
+                        <svg class="star" data-val="1" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="2" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="3" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="4" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                        <svg class="star" data-val="5" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>主子食評 (奴才代筆) <span class="req-star">*</span></label>
+                    <textarea id="snack-review" class="form-control" rows="3" required placeholder="例如：小乖乖超鐘意食！一開包裝就跑過來..."></textarea>
+                </div>
+
+                <button type="submit" class="submit-btn">送交審核 →</button>
+                <div class="submit-footer">免登入、不需提供個人資料。分享審核通過後會公開。</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JS Logic -->
+    <script>
+        // Global variables
+        let currentImageBase64 = "https://placehold.co/600x400/fbeae6/e77b65?text=沒有圖片";
+
+        // Healthy Default Snacks
+        const defaultSnacks = [
+            { 
+                id: 1, 
+                name: "Neco Puree 頂級無添加天然雞肉肉泥", 
+                brand: "Riverd Republic", 
+                category: "健康肉泥", 
+                origin: "日本",
+                ingredients: "雞柳、米粉、天然水（使用鳥取縣奧大泉水）、扇貝提取物調味料、麥芽低聚醣、鰹魚湯、海帶湯、寒天、維生素E",
+                specs: "13gx4",
+                img: "RR14505.jpg.webp", 
+                prefRating: 5,
+                repurchaseRating: 5,
+                review: "小乖乖超鐘意食！一聽到開蓋聲就會跑過來，成分純粹冇負擔，平時會搣碎加落乾糧度呃佢食！",
+                status: 'published',
+                prices: [{ shop: "Petkoi", price: 25, label: "最平 👑" }, { shop: "Q-pets", price: 28 }]
+            },
+            { 
+                id: 2, 
+                name: "Neco Puree 無添加雞肉海鮮肉泥", 
+                brand: "Riverd Republic", 
+                category: "健康肉泥", 
+                origin: "日本",
+                ingredients: "[雞肉] 雞柳、米粉 [海鮮] 海鮮（金槍魚、鰹魚、鮭魚、銀魚）、米粉",
+                specs: "13gx20",
+                img: "RR14510_658de01b-d808-4de7-b9ba-360b20bc68e5.webp", 
+                prefRating: 4,
+                repurchaseRating: 4,
+                review: "一大包有齊雞肉同海鮮，主子日日轉口味都唔會悶，無添加食得放心。",
+                status: 'published',
+                prices: []
+            },
+            { 
+                id: 3, 
+                name: "TOPVALU 鰹魚無添加貓泥", 
+                brand: "TOPVALU", 
+                category: "健康肉泥", 
+                origin: "泰國",
+                ingredients: "鰹魚、米粉、鮪魚油、維他命E",
+                specs: "14gx4",
+                img: "713344329_17891188965514702_3671883095525903886_n.jpg", 
+                prefRating: 4,
+                repurchaseRating: 4,
+                review: "AEON自家品牌，平靚正！無添加色素同防腐劑，鰹魚味好香，主子秒殺。",
+                status: 'published',
+                prices: [{ shop: "AEON", price: 15.9, label: "最平 👑" }]
+            },
+            { 
+                id: 4, 
+                name: "Muji 無添加雞胸肉肉泥 (含乳酸菌)", 
+                brand: "Muji", 
+                category: "健康肉泥", 
+                origin: "日本",
+                ingredients: "雞胸肉、米粉、乳酸菌",
+                specs: "10gx4",
+                img: "5f400dcc.jpg.webp", 
+                prefRating: 5,
+                repurchaseRating: 5,
+                review: "竟然連Muji都有出貓零食！包裝好日系，重點係成分超級乾淨，加咗乳酸菌對腸胃好。",
+                status: 'published',
+                prices: [{ shop: "Muji 皇室堡/AIRSIDE", price: 22, label: "獨家發售 👑" }]
+            },
+            { 
+                id: 5, 
+                name: "但馬高原凍乾雞柳", 
+                brand: "MAMACOOK", 
+                category: "凍乾", 
+                origin: "日本",
+                ingredients: "100% 日本雞胸肉",
+                specs: "30g",
+                img: "800x.webp", 
+                prefRating: 5,
+                repurchaseRating: 5,
+                review: "雖然有少少貴但打開真係勁香，日本凍乾會安心啲，浸水還原好快，騙水一流！",
+                status: 'published',
+                prices: [{ shop: "HKTVmall", price: 58, label: "最平 👑" }]
+            },
+            { 
+                id: 6, 
+                name: "Hagoromo無一物鰹魚湯包", 
+                brand: "Hagoromo", 
+                category: "健康湯包", 
+                origin: "日本",
+                ingredients: "鰹魚、水",
+                specs: "40g",
+                img: "https://images.unsplash.com/photo-1548247416-ec66f4900b2e?auto=format&fit=crop&w=400&q=80", 
+                prefRating: 5,
+                repurchaseRating: 5,
+                review: "完全無添加！只係得魚同水，呃水神器，夏天雪凍少少俾主子飲好消暑。",
+                status: 'published',
+                prices: [{ shop: "Donki", price: 11, label: "最平 👑" }, { shop: "HKTVmall", price: 13 }]
+            }
+        ];
+
+        let snacksData = JSON.parse(localStorage.getItem('catSnacks_v4')) || defaultSnacks;
+
+        function saveToLocal() {
+            localStorage.setItem('catSnacks_v5', JSON.stringify(snacksData));
+        }
+
+        function getStarsHTML(rating) {
+            let html = '';
+            for(let i = 1; i <= 5; i++) {
+                html += `<svg class="star-icon ${i <= rating ? '' : 'empty'}" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>`;
+            }
+            return html;
+        }
+
+        // Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('nav button').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if(event && event.currentTarget.tagName === 'BUTTON') {
+                event.currentTarget.classList.add('active');
+            }
+
+            if(tabId === 'home') renderSnacks();
+            if(tabId === 'admin' && document.getElementById('admin-dashboard').style.display === 'block') renderAdminTable();
+        }
+
+        // Render Home Snacks
+        function renderSnacks() {
+            const wall = document.getElementById('snack-wall');
+            const filter = document.getElementById('filter-category').value;
+            wall.innerHTML = '';
+            
+            const filteredSnacks = filter === 'all' ? snacksData : snacksData.filter(s => s.category === filter);
+
+            if (filteredSnacks.length === 0) {
+                wall.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #888; padding: 40px;">暫時沒有這個類別的零食喔，快來做第一個分享的毛孩家長吧！</p>';
+                return;
+            }
+
+            filteredSnacks.forEach(snack => {
+                // Generate Dynamic Price Section
+                let priceHtml = '';
+                if (snack.prices && snack.prices.length > 0) {
+                    // Sort prices low to high
+                    const sortedPrices = [...snack.prices].sort((a, b) => parseFloat(a.price) - parseFloat(b.price));
+                    const lowestPrice = sortedPrices[0];
+                    const count = sortedPrices.length;
+
+                    let priceListHtml = sortedPrices.map((p, idx) => `
+                        <div class="price-item">
+                            <span class="shop-name-wrapper">📍 ${p.shop} ${idx === 0 ? '<span class="cheapest-badge">最平 👑</span>' : ''}</span>
+                            <span class="shop-price-wrapper">HK$${p.price} <span class="shop-unit">(${p.unit || '-'})</span></span>
+                        </div>
+                    `).join('');
+
+                    priceHtml = `
+                        <div class="price-section">
+                            <div class="lowest-price">最低參考售價：<strong>HK$${lowestPrice.price}</strong> <span class="shop-unit">(${lowestPrice.unit || '-'})</span></div>
+                            <button class="toggle-prices-btn" onclick="togglePriceList(this)">
+                                🔍 比較本地售價 (${count}個特價點)
+                            </button>
+                            <div class="price-list-dropdown" style="display: none;">
+                                ${priceListHtml}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                wall.innerHTML += `
+                    <div class="snack-card">
+                        <div class="snack-img-wrapper">
+                            <img src="${snack.img}" class="snack-img" alt="Product Image">
+                        </div>
+                        <div class="snack-info">
+                            <span class="tag">${snack.category}</span>
+                            <h3 class="snack-title">${snack.name}</h3>
+                            <div class="snack-details">
+                                <strong>品牌：</strong>${snack.brand || '未提供'}<br>
+                                <strong>產地：</strong>${snack.origin || '未提供'}<br>
+                                <strong>成分：</strong>${snack.ingredients || '未提供'}
+                            </div>
+                            <div class="rating-display">喜愛度 ${getStarsHTML(snack.prefRating || 0)}</div>
+                            <div class="rating-display">回購意願 ${getStarsHTML(snack.repurchaseRating || 0)}</div>
+                            ${priceHtml}
+                            <div class="snack-review" style="margin-top: 15px;">💬 "${snack.review}"</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function togglePriceList(btn) {
+            const dropdown = btn.nextElementSibling;
+            if (dropdown.style.display === 'none') {
+                dropdown.style.display = 'flex';
+                btn.style.background = '#fce7e3';
+            } else {
+                dropdown.style.display = 'none';
+                btn.style.background = 'var(--primary-light)';
+            }
+        }
+
+        // Modal Form Handling
+        function openModal(isEdit = false) {
+            document.getElementById('upload-modal').style.display = 'flex';
+            const priceContainer = document.getElementById('price-list-container');
+            priceContainer.innerHTML = ''; // Clear previous
+
+            if (!isEdit) {
+                document.getElementById('snack-form').reset();
+                document.getElementById('file-name-display').innerText = 'No file chosen';
+                currentImageBase64 = "https://placehold.co/600x400/fbeae6/e77b65?text=預設圖片";
+                setStars('pref-stars', 0);
+                setStars('repurchase-stars', 0);
+                addPriceRow(); // Add one default empty row
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('upload-modal').style.display = 'none';
+        }
+
+        function addPriceRow(shop = '', price = '', unit = '') {
+            const container = document.getElementById('price-list-container');
+            const row = document.createElement('div');
+            row.className = 'price-input-row';
+            row.innerHTML = `
+                <input type="text" class="form-control shop-input" placeholder="店鋪 (例: HKTVmall)" value="${shop}" required style="flex: 2;">
+                <input type="number" class="form-control price-input" placeholder="HK$" value="${price}" required style="flex: 1.5;">
+                <input type="text" class="form-control unit-input" placeholder="單位 (例: 50g)" value="${unit}" style="flex: 1.5;">
+                <button type="button" class="del-price-btn" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(row);
+        }
+
+        // Interactive Stars setup
+        function setupInteractiveStars() {
+            ['pref-stars', 'repurchase-stars'].forEach(id => {
+                const container = document.getElementById(id);
+                container.querySelectorAll('.star').forEach(star => {
+                    star.addEventListener('click', function() {
+                        setStars(id, parseInt(this.getAttribute('data-val')));
+                    });
+                });
+            });
+        }
+
+        function setStars(containerId, value) {
+            const container = document.getElementById(containerId);
+            container.setAttribute('data-value', value);
+            container.querySelectorAll('.star').forEach(s => {
+                s.classList.toggle('active', parseInt(s.getAttribute('data-val')) <= value);
+            });
+        }
+
+        // Canvas Image Compression
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const nameDisplay = document.getElementById('file-name-display');
+            if (!file) {
+                nameDisplay.innerText = 'No file chosen';
+                return;
+            }
+            nameDisplay.innerText = file.name;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = e => {
+                const img = new Image();
+                img.src = e.target.result;
+                img.onload = () => {
+                    const canvas = document.createElement('canvas');
+                    const MAX_WIDTH = 800; // Resize to save storage
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    currentImageBase64 = canvas.toDataURL('image/jpeg', 0.8);
+                }
+            }
+        }
+
+        // Form Submit
+        function submitSnack(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit-id').value;
+            
+            // Gather dynamic prices
+            const priceRows = document.querySelectorAll('.price-input-row');
+            const prices = [];
+            priceRows.forEach(row => {
+                const shop = row.querySelector('.shop-input').value.trim();
+                const price = row.querySelector('.price-input').value.trim();
+                const unit = row.querySelector('.unit-input').value.trim();
+                if (shop && price) {
+                    prices.push({ shop, price, unit });
+                }
+            });
+
+            const newSnack = {
+                id: id ? parseInt(id) : Date.now(),
+                name: document.getElementById('snack-name').value,
+                brand: document.getElementById('snack-brand').value,
+                category: document.getElementById('snack-cat').value,
+                origin: document.getElementById('snack-origin').value,
+                ingredients: document.getElementById('snack-ingredients').value,
+                specs: document.getElementById('snack-specs').value,
+                prices: prices,
+                prefRating: parseInt(document.getElementById('pref-stars').getAttribute('data-value')) || 0,
+                repurchaseRating: parseInt(document.getElementById('repurchase-stars').getAttribute('data-value')) || 0,
+                review: document.getElementById('snack-review').value,
+                img: currentImageBase64
+            };
+
+            if (id) {
+                const index = snacksData.findIndex(s => s.id == id);
+                if(document.getElementById('snack-img-file').files.length === 0) {
+                    newSnack.img = snacksData[index].img;
+                }
+                snacksData[index] = newSnack;
+                alert("已成功更新零食資料！");
+            } else {
+                snacksData.unshift(newSnack);
+                alert("感謝分享！主子會為你感到驕傲的！");
+            }
+
+            saveToLocal();
+            closeModal();
+            renderSnacks();
+            if (document.getElementById('admin-dashboard').style.display === 'block') {
+                renderAdminTable();
+            }
+        }
+
+        // --- Admin Functions ---
+        function checkAdmin() {
+            if (document.getElementById('admin-pwd').value === 'MaruCheung529') {
+                document.getElementById('admin-login').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                renderAdminTable();
+            } else { 
+                alert('密碼錯誤！'); 
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('admin-pwd').value = '';
+            document.getElementById('admin-login').style.display = 'block';
+            document.getElementById('admin-dashboard').style.display = 'none';
+        }
+
+        function renderAdminTable() {
+            const tbody = document.getElementById('admin-table-body');
+            tbody.innerHTML = '';
+            snacksData.forEach(snack => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td><img src="${snack.img}" style="width: 48px; height:48px; object-fit:cover; border-radius:10px;"></td>
+                        <td><strong>${snack.name}</strong></td>
+                        <td>${snack.brand || '-'}</td>
+                        <td><span class="tag" style="margin:0; font-size:0.75rem; padding:4px 8px;">${snack.category}</span></td>
+                        <td>
+                            <button class="action-btn" onclick="editSnack(${snack.id})">編輯</button>
+                            <button class="action-btn del" onclick="deleteSnack(${snack.id})">刪除</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function editSnack(id) {
+            const snack = snacksData.find(s => s.id === id);
+            document.getElementById('edit-id').value = snack.id;
+            document.getElementById('snack-name').value = snack.name;
+            document.getElementById('snack-cat').value = snack.category;
+            document.getElementById('snack-brand').value = snack.brand || '';
+            document.getElementById('snack-origin').value = snack.origin || '';
+            document.getElementById('snack-ingredients').value = snack.ingredients || '';
+            document.getElementById('snack-specs').value = snack.specs || '';
+            document.getElementById('snack-review').value = snack.review;
+            
+            document.getElementById('dynamic-prices-container').innerHTML = '';
+            if (snack.prices && snack.prices.length > 0) {
+                snack.prices.forEach(p => addPriceRow(p.shop, p.price));
+            } else {
+                addPriceRow();
+            }
+            
+            setStars('pref-stars', snack.prefRating || 0);
+            setStars('repurchase-stars', snack.repurchaseRating || 0);
+            document.getElementById('file-name-display').innerText = '(保持原圖片)';
+            currentImageBase64 = snack.img;
+
+            openModal(true);
+        }
+
+        function deleteSnack(id) {
+            // Using standard confirm to keep it strictly single file and simple, 
+            // but styled alerts could be built similar to the modal if needed.
+            if (confirm('確定要刪除這筆零食紀錄嗎？')) {
+                snacksData = snacksData.filter(s => s.id !== id);
+                saveToLocal();
+                renderAdminTable();
+                renderSnacks();
+            }
+        }
+
+        // Initialize App
+        setupInteractiveStars();
+        renderSnacks();
+    </script>
+</body>
+</html>
