@@ -167,10 +167,11 @@
             z-index: 10;
         }
 
+        /* 更新圖片容器設定 */
         .img-container {
             width: 100%;
             height: 250px;
-            background-color: var(--light-peach);
+            background-color: var(--white); /* 變成白色背景 */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -178,12 +179,14 @@
             font-size: 1rem;
             position: relative;
             overflow: hidden;
+            padding: 15px; /* 增加一點留白，讓圖片不會死死貼住邊緣 */
+            box-sizing: border-box;
         }
 
         .img-container img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain; /* 確保原比例完整顯示，絕不裁切變形 */
         }
 
         .card-content { padding: 1.5rem; }
@@ -698,4 +701,3 @@
         }
     </script>
 </body>
-</html>
