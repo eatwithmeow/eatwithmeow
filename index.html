@@ -167,11 +167,10 @@
             z-index: 10;
         }
 
-        /* 更新圖片容器設定 */
         .img-container {
             width: 100%;
             height: 250px;
-            background-color: var(--white); /* 變成白色背景 */
+            background-color: var(--white);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -179,14 +178,14 @@
             font-size: 1rem;
             position: relative;
             overflow: hidden;
-            padding: 15px; /* 增加一點留白，讓圖片不會死死貼住邊緣 */
+            padding: 15px;
             box-sizing: border-box;
         }
 
         .img-container img {
             width: 100%;
             height: 100%;
-            object-fit: contain; /* 確保原比例完整顯示，絕不裁切變形 */
+            object-fit: contain;
         }
 
         .card-content { padding: 1.5rem; }
@@ -399,9 +398,54 @@
             font-size: 0.95rem;
         }
 
+        /* 📱 手機版專屬設定 */
         @media (max-width: 768px) {
             .principles-grid { grid-template-columns: 1fr; }
             header { flex-direction: column; gap: 15px; }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .controls select, .controls button {
+                width: 100%;
+            }
+
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 0 4%;
+            }
+            
+            .img-container {
+                height: 140px;
+                padding: 10px;
+            }
+            .card-content { 
+                padding: 12px;
+            }
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            .brand { font-size: 0.8rem; }
+            .title {
+                font-size: 0.95rem;
+                line-height: 1.3;
+            }
+            .category-tag {
+                font-size: 0.7rem;
+                padding: 2px 8px;
+            }
+            .info {
+                font-size: 0.75rem;
+                display: -webkit-box;
+                -webkit-line-clamp: 2; 
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+            }
+            .price-item { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -414,11 +458,10 @@
                 <button id="btn-wall" class="nav-btn active" onclick="switchTab('wall')">首頁牆</button>
                 <button id="btn-principles" class="nav-btn" onclick="switchTab('principles')">健康原則</button>
             </div>
-            <div style="font-size: 0.85rem; color: #ccc; cursor:pointer;" onclick="adminLogin()">Admin</div>
         </div>
     </header>
 
-    <!-- 區塊 1: 首頁牆 (預設顯示) -->
+    <!-- 區塊 1: 首頁牆 -->
     <div id="section-wall" style="display: block;">
         <div class="hero">
             <h1>HAPPY SHARING!</h1>
@@ -440,7 +483,7 @@
         </div>
     </div>
 
-    <!-- 區塊 2: 健康原則 (預設隱藏) -->
+    <!-- 區塊 2: 健康原則 -->
     <div id="section-principles" style="display: none;">
         <div class="principles-container">
             <div class="principles-intro">
@@ -477,6 +520,15 @@
             </div>
         </div>
     </div>
+    
+    <!-- 頁尾免責聲明與 Admin 入口 -->
+    <footer style="text-align: center; padding: 2rem 5%; margin-top: 3rem; border-top: 1px dashed var(--border-color); background-color: var(--white);">
+        <p style="font-size: 0.85rem; color: var(--text-light); max-width: 800px; margin: 0 auto 15px auto; line-height: 1.6;">
+            🐾 溫馨提示：本網站的評價及價格僅供參考。<br>
+            每位主子的體質與健康狀況皆不同，各位家長購買前請自行評估，為毛孩挑選最合適的安全零食喔！
+        </p>
+        <span style="font-size: 0.75rem; color: #e0e0e0; cursor:pointer; padding: 10px;" onclick="adminLogin()">Admin Access</span>
+    </footer>
 
     <!-- Add Snack Modal -->
     <div class="modal" id="addSnackModal">
@@ -524,7 +576,6 @@
         let isAdmin = false;
         let products = [];
 
-        // 絕對不會壞的頁籤切換功能
         function switchTab(tab) {
             if (tab === 'wall') {
                 document.getElementById('btn-wall').classList.add('active');
@@ -689,7 +740,6 @@
             });
         }
 
-        // 確保網頁讀取完畢後才執行連線，避免按鈕被卡住
         window.addEventListener('DOMContentLoaded', (event) => {
             fetchProducts();
         });
@@ -701,3 +751,4 @@
         }
     </script>
 </body>
+</html>
