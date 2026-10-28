@@ -33,8 +33,6 @@
             --white: #FFFFFF;
             --border-color: #F0E6DE;
             --accent: #E58C74;
-            --pending-bg: #FFF3CD;
-            --pending-text: #856404;
         }
 
         body {
@@ -171,19 +169,6 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.03);
             transition: transform 0.3s;
             position: relative;
-        }
-
-        .status-badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--pending-bg);
-            color: var(--pending-text);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            z-index: 10;
         }
 
         .img-container {
@@ -520,7 +505,6 @@
             }
             .info {
                 font-size: 0.75rem;
-                /* 已移除 -webkit-line-clamp 截斷設定，讓成分完整顯示 */
             }
             
             /* 手機版排版調整 */
@@ -605,13 +589,12 @@
         </div>
     </div>
     
-    <!-- 頁尾與隱藏的 Admin 入口 -->
+    <!-- 頁尾聲明 -->
     <footer style="text-align: center; padding: 2rem 5%; margin-top: 3rem; border-top: 1px dashed var(--border-color); background-color: var(--white);">
-        <p style="font-size: 0.85rem; color: var(--text-light); max-width: 800px; margin: 0 auto 15px auto; line-height: 1.6;">
+        <p style="font-size: 0.85rem; color: var(--text-light); max-width: 800px; margin: 0 auto; line-height: 1.6;">
             🐾 溫馨提示：本網站的評價及價格僅供參考。<br>
             每位主子的體質與健康狀況皆不同，各位家長購買前請自行評估，為毛孩挑選最合適的安全零食喔！
         </p>
-        <span style="font-size: 0.75rem; color: #e0e0e0; cursor:pointer; padding: 10px;" onclick="adminLogin()">Admin Access</span>
     </footer>
 
     <!-- Add Snack Modal -->
@@ -665,7 +648,6 @@
 
     <script>
         const scriptURL = "https://script.google.com/macros/s/AKfycbyJhnzbvZq1uUTxO0PGD3vim3Dm2CwcwpjRrsd0apxiBVj3Ck1DH6wWDVQgCyXGKpuy/exec";
-        let isAdmin = false;
         let products = [];
 
         function switchTab(tab) {
@@ -730,7 +712,8 @@
             }
 
             products.forEach(product => {
-                if (!isAdmin && product.status === "pending") return;
+                // 一般使用者不會看到 Pending 狀態的產品，只能在 Google Sheet 審核
+                if (product.status === "pending") return;
                 if (filter !== 'all' && product.category !== filter) return;
 
                 let imgHtml = (product.img && product.img.startsWith("http"))
@@ -778,12 +761,9 @@
                     `;
                 }
 
-                let statusBadge = (isAdmin && product.status === "pending") ? `<div class="status-badge">待審核</div>` : '';
-
                 const card = document.createElement('div');
                 card.className = 'card';
                 card.innerHTML = `
-                    ${statusBadge}
                     <div class="img-container">
                         ${imgHtml}
                     </div>
@@ -801,15 +781,6 @@
                 `;
                 grid.appendChild(card);
             });
-        }
-
-        function adminLogin() {
-            const pwd = prompt("請輸入管理員密碼：");
-            if (pwd === "MaruCheung529") {
-                isAdmin = true;
-                alert("管理員登入成功！");
-                renderGrid();
-            }
         }
 
         function openModal(modalId) { document.getElementById(modalId).style.display = 'flex'; }
